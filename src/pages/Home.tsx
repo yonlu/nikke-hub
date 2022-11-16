@@ -1,5 +1,5 @@
 import { useNikkesQuery } from "../hooks/useNikkesQuery";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   Dialog,
   Disclosure,
@@ -13,8 +13,10 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { ChevronDownIcon, PlusIcon } from "@heroicons/react/20/solid";
+import { useForm } from "react-hook-form";
 import { classNames } from "../utils/helpers";
 import { NikkeCard } from "../components/NikkeCard";
+import { useFilterNikkesByCriteriaQuery } from "../hooks/useFilterNikkesByCriteriaQuery";
 
 const navigation = {
   categories: [
@@ -167,8 +169,20 @@ const filters = [
 function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [filterOptions, setFilterOptions] = useState({});
 
-  const { data: nikkes, isLoading } = useNikkesQuery();
+  const { register, watch } = useForm();
+
+  const { data: nikkes, isLoading } =
+    useFilterNikkesByCriteriaQuery(filterOptions);
+
+  useEffect(() => {
+    const subscription = watch((value) => {
+      console.log(value);
+      setFilterOptions(value);
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   if (isLoading) {
     return <span>Loading...</span>;
@@ -465,8 +479,8 @@ function Home() {
                               className="flex items-center"
                             >
                               <input
+                                {...register(`${section.id}`)}
                                 id={`${section.id}-${optionIdx}`}
-                                name={`${section.id}[]`}
                                 defaultValue={option.value}
                                 type="checkbox"
                                 className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
@@ -498,6 +512,7 @@ function Home() {
               <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3">
                 {nikkes.map((nikke: any) => (
                   <NikkeCard
+                    key={nikke.id}
                     id={nikke.id}
                     name={nikke.name}
                     rarity={nikke.rarity}
