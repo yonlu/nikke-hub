@@ -14,6 +14,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { ChevronDownIcon, PlusIcon } from "@heroicons/react/20/solid";
 import { classNames } from "../utils/helpers";
+import { NikkeCard } from "../components/NikkeCard";
 
 const navigation = {
   categories: [
@@ -139,10 +140,7 @@ const navigation = {
       ],
     },
   ],
-  pages: [
-    { name: "Company", href: "#" },
-    { name: "Stores", href: "#" },
-  ],
+  pages: [],
 };
 
 const filters = [
@@ -708,40 +706,15 @@ function Home() {
 
               <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3">
                 {nikkes.map((nikke: any) => (
-                  <div
-                    key={nikke.id}
-                    className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white"
-                  >
-                    <div className="aspect-w-3 aspect-h-4 bg-gray-200 group-hover:opacity-75 sm:aspect-none sm:h-96">
-                      <img
-                        src={nikke.imageSrc}
-                        alt={nikke.imageAlt}
-                        className="h-full w-full object-cover object-center sm:h-full sm:w-full"
-                      />
-                    </div>
-                    <div className="flex flex-1 flex-col space-y-2 p-4">
-                      <h3 className="text-sm font-medium text-gray-900">
-                        <a href={nikke.href}>
-                          <span
-                            aria-hidden="true"
-                            className="absolute inset-0"
-                          />
-                          {nikke.name}
-                        </a>
-                      </h3>
-                      <p className="text-sm text-gray-500">
-                        {nikke.description}
-                      </p>
-                      <div className="flex flex-1 flex-col justify-end">
-                        <p className="text-sm italic text-gray-500">
-                          {nikke.options}
-                        </p>
-                        <p className="text-base font-medium text-gray-900">
-                          {nikke.price}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                  <NikkeCard
+                    id={nikke.id}
+                    name={nikke.name}
+                    rarity={nikke.rarity}
+                    burst={nikke.burst}
+                    code={nikke.code}
+                    weapon={nikke.weapon}
+                    image={nikke.image}
+                  />
                 ))}
               </div>
             </section>
