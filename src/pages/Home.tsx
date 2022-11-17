@@ -1,4 +1,3 @@
-import { useNikkesQuery } from "../hooks/useNikkesQuery";
 import { Fragment, useEffect, useState } from "react";
 import {
   Dialog,
@@ -164,6 +163,29 @@ const filters = [
       { value: "III", label: "Burst III" },
     ],
   },
+  {
+    id: "weapon",
+    name: "Weapon Type",
+    options: [
+      { value: "AR", label: "Assault Rifle" },
+      { value: "MG", label: "Machine Gun" },
+      { value: "RL", label: "Rocket Launcher" },
+      { value: "SG", label: "Shotgun" },
+      { value: "SMG", label: "Submachine Gun" },
+      { value: "SR", label: "Sniper Rifle" },
+    ],
+  },
+  {
+    id: "code",
+    name: "Code Type",
+    options: [
+      { value: "ZEUS", label: "Electric" },
+      { value: "HSTA", label: "Fire" },
+      { value: "DMTR", label: "Iron" },
+      { value: "PSID", label: "Water" },
+      { value: "ANMI", label: "Wind" },
+    ],
+  },
 ];
 
 function Home() {
@@ -183,10 +205,6 @@ function Home() {
     });
     return () => subscription.unsubscribe();
   }, [watch]);
-
-  if (isLoading) {
-    return <span>Loading...</span>;
-  }
 
   return (
     <div className="bg-white">
@@ -510,18 +528,19 @@ function Home() {
               </h2>
 
               <div className="grid grid-cols-1 gap-y-4 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3">
-                {nikkes.map((nikke: any) => (
-                  <NikkeCard
-                    key={nikke.id}
-                    id={nikke.id}
-                    name={nikke.name}
-                    rarity={nikke.rarity}
-                    burst={nikke.burst}
-                    code={nikke.code}
-                    weapon={nikke.weapon}
-                    image={nikke.image}
-                  />
-                ))}
+                {!isLoading &&
+                  nikkes.map((nikke: any) => (
+                    <NikkeCard
+                      key={nikke.id}
+                      id={nikke.id}
+                      name={nikke.name}
+                      rarity={nikke.rarity}
+                      burst={nikke.burst}
+                      code={nikke.code}
+                      weapon={nikke.weapon}
+                      image={nikke.image}
+                    />
+                  ))}
               </div>
             </section>
           </div>
